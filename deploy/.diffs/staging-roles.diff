@@ -17,7 +17,8 @@
 <   - create
 <   - update
 <   - patch
-44d30
+44,45d30
 <   - endpoints
-59d44
+<   - endpoints/restricted
+60d44
 <   - secrets/finalizers

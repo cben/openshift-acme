@@ -232,13 +232,13 @@ func (e *Exposer) Expose(c *acme.Client, domain string, token string) error {
 			// to router badly matching subpaths on route for the same domain if only one of them was using TLS
 			TLS: &routev1.TLSConfig{
 				Termination:                   routev1.TLSTerminationEdge,
-				InsecureEdgeTerminationPolicy: "Allow",
+				InsecureEdgeTerminationPolicy: routev1.InsecureEdgeTerminationPolicyAllow,
 			},
 		},
 	}
 	// TODO: Remove after https://github.com/openshift/origin/issues/14950 is fixed in all supported OpenShift versions
-	if e.route.Spec.TLS != nil {
-		route.Spec.TLS.InsecureEdgeTerminationPolicy = e.route.Spec.TLS.InsecureEdgeTerminationPolicy
+	if e.route.Spec.TLS != nil && e.route.Spec.TLS.InsecureEdgeTerminationPolicy == routev1.InsecureEdgeTerminationPolicyRedirect {
+		route.Spec.TLS.InsecureEdgeTerminationPolicy = routev1.InsecureEdgeTerminationPolicyRedirect
 	}
 
 	createdRoute, err := e.routeClientset.RouteV1().Routes(e.route.Namespace).Create(route)
